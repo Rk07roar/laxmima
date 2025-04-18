@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Evaluation Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    h1 {
+      color: #333;
+    }
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+    .results, .news {
+      margin-top: 30px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+  </style>
+
+</head>
+<body>
+
+  <h1>Stock Evaluation Tool for GROWW </h1>
+
+  <form id="stockForm">
+    <!-- Container 1: Stock Data -->
+    <div class="form-section">
+      <h2>📈 Stock Data</h2>
+      <label for="todaysHigh">Today's High</label>
+      <input type="number" id="todaysHigh">
+  
+      <label for="todaysLow">Today's Low</label>
+      <input type="number" id="todaysLow">
+  
+      <label for="fiftyTwoHigh">52-Week High</label>
+      <input type="number" id="fiftyTwoHigh">
+  
+      <label for="fiftyTwoLow">52-Week Low</label>
+      <input type="number" id="fiftyTwoLow">
+  
+      <label for="openCircuit">Open Circuit</label>
+      <input type="number" id="openCircuit">
+  
+      <label for="prevClose">Previous Close</label>
+      <input type="number" id="prevClose">
+  
+      <label for="volume">Volume</label>
+      <input type="number" id="volume">
+  
+      <label for="tradeValue">Total Trade Value</label>
+      <input type="number" id="tradeValue">
+  
+      <label for="upperCircuit">Upper Circuit</label>
+      <input type="number" id="upperCircuit">
+  
+      <label for="lowerCircuit">Lower Circuit</label>
+      <input type="number" id="lowerCircuit">
+    </div>
+  
+    <!-- Container 2: Analyst Sentiments -->
+    <div class="form-section">
+      <h2>🧠 Analyst Sentiments</h2>
+      <label for="buyPercent">Buy %</label>
+      <input type="number" id="buyPercent">
+  
+      <label for="holdPercent">Hold %</label>
+      <input type="number" id="holdPercent">
+  
+      <label for="sellPercent">Sell %</label>
+      <input type="number" id="sellPercent">
+    </div>
+  
+    <!-- Container 3: Fundamental Data -->
+    <div class="form-section">
+      <h2>📊 Fundamentals</h2>
+      <label for="marketCap">Market Cap (Cr)</label>
+      <input type="number" id="marketCap">
+  
+      <label for="peRatio">P/E Ratio (TTM)</label>
+      <input type="number" id="peRatio">
+  
+      <label for="pbRatio">P/B Ratio</label>
+      <input type="number" id="pbRatio">
+  
+      <label for="industryPE">Industry P/E</label>
+      <input type="number" id="industryPE">
+  
+      <label for="debtEquity">Debt to Equity</label>
+      <input type="number" id="debtEquity">
+  
+      <label for="roe">ROE (%)</label>
+      <input type="number" id="roe">
+  
+      <label for="eps">EPS (TTM)</label>
+      <input type="number" id="eps">
+  
+      <label for="dividendYield">Dividend Yield (%)</label>
+      <input type="number" id="dividendYield">
+  
+      <label for="bookValue">Book Value</label>
+      <input type="number" id="bookValue">
+  
+      <label for="faceValue">Face Value</label>
+      <input type="number" id="faceValue">
+    </div>
+  
+    <button type="button" onclick="evaluateStock()">Evaluate Stock</button>
+  </form>
+  
+
+  <div class="results" id="results">
+    <h2>📌 Evaluation Results</h2>
+    <p id="recommendation">Recommendation: --</p>
+    <p id="holdDays">Hold Period: --</p>
+    <p id="sellTarget">Target Sell Price: --</p>
+    <p id="confidence">Confidence Level: --</p>
+  </div>
+
+  <div class="news" id="news">
+    <h2>📰 Latest Stock News</h2>
+    <ul id="newsList">
+      <li>-- No news yet --</li>
+    </ul>
+  </div>
+
+  <script>
+    function evaluateStock() {
+      // Collect data from the form
+      const data = {
+        todaysHigh: document.getElementById("todaysHigh").value,
+        todaysLow: document.getElementById("todaysLow").value,
+        fiftyTwoHigh: document.getElementById("fiftyTwoHigh").value,
+        fiftyTwoLow: document.getElementById("fiftyTwoLow").value,
+        openCircuit: document.getElementById("openCircuit").value,
+        prevClose: document.getElementById("prevClose").value,
+        volume: document.getElementById("volume").value,
+        tradeValue: document.getElementById("tradeValue").value,
+        upperCircuit: document.getElementById("upperCircuit").value,
+        lowerCircuit: document.getElementById("lowerCircuit").value,
+        buyPercent: document.getElementById("buyPercent").value,
+        holdPercent: document.getElementById("holdPercent").value,
+        sellPercent: document.getElementById("sellPercent").value,
+        marketCap: document.getElementById("marketCap").value,
+        peRatio: document.getElementById("peRatio").value,
+        pbRatio: document.getElementById("pbRatio").value,
+        industryPE: document.getElementById("industryPE").value,
+        debtEquity: document.getElementById("debtEquity").value,
+        roe: document.getElementById("roe").value,
+        eps: document.getElementById("eps").value,
+        dividendYield: document.getElementById("dividendYield").value,
+        bookValue: document.getElementById("bookValue").value,
+        faceValue: document.getElementById("faceValue").value
+      };
+  
+      // Send the data to Flask backend for evaluation
+      fetch('/evaluate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())  // Convert response to JSON
+      .then(result => {
+        // Show the evaluation result
+        document.getElementById("recommendation").textContent = `Recommendation: ${result.recommendation}`;
+        document.getElementById("sellTarget").textContent = `Target Sell Price: ${result.targetSellPrice}`;
+        document.getElementById("holdDays").textContent = `Hold Period: ${result.holdPeriod}`;
+        document.getElementById("confidence").textContent = `Confidence Level: ${result.confidence}`;
+  
+        // Show stock news
+        const newsList = document.getElementById("newsList");
+        newsList.innerHTML = ""; // Clear existing news
+  
+        // Display each article from the API response
+        result.news.forEach(news => {
+          const li = document.createElement("li");
+          li.innerHTML = `<a href="${news.url}" target="_blank">${news.title}</a>: ${news.description}`;
+          newsList.appendChild(li);
+        });
+      })
+      .catch(error => {
+        console.error("Error evaluating stock:", error);
+        alert("There was an error while evaluating the stock. Please try again.");
+      });
+    }
+  </script>
+</body>
+</html>
